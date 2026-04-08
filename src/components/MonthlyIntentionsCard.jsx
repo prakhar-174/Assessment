@@ -1,23 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { format } from 'date-fns';
 
-const MonthlyIntentionsCard = ({ currentMonth }) => {
-  const [intentions, setIntentions] = useState('');
-  
-  const monthKey = format(currentMonth, 'yyyy-MM');
-
-  // Load from local storage dynamically when monthKey changes
-  useEffect(() => {
-    const saved = localStorage.getItem(`intentions_${monthKey}`);
-    setIntentions(saved || '');
-  }, [monthKey]);
-
-  const handleChange = (e) => {
-    const val = e.target.value;
-    setIntentions(val);
-    localStorage.setItem(`intentions_${monthKey}`, val);
-  };
-
+const MonthlyIntentionsCard = ({ currentMonth, intentions, onChangeIntentions }) => {
   return (
     <div className="rounded-2xl p-6 md:p-8 flex flex-col items-start bg-[#1f2833] border border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.4)] h-64 md:h-full relative overflow-hidden">
       {/* Decorative Gradient Blob */}
@@ -37,7 +21,7 @@ const MonthlyIntentionsCard = ({ currentMonth }) => {
         />
         <textarea
           value={intentions}
-          onChange={handleChange}
+          onChange={(e) => onChangeIntentions(e.target.value)}
           className="w-full h-full bg-transparent border-none resize-none focus:outline-none text-slate-300 placeholder-slate-600/50 leading-[32px] pt-[2px]"
           placeholder="Jot down your main themes or goals for the month..."
           spellCheck="false"
