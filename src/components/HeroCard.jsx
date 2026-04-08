@@ -40,15 +40,15 @@ const HeroCard = ({ currentMonth }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-[#2c1a0c]/90 via-[#2c1a0c]/30 to-transparent" />
 
       {/* Oversized Month Text Overlay with Micro-Animation */}
-      <div className="relative z-10 p-4 md:p-6 pb-4">
+      <div className="relative z-10 p-3 md:p-6 pb-2 md:pb-4">
         <AnimatePresence mode="popLayout" initial={false}>
-          <motion.h1
+          <motion.h1 
             key={monthKey}
             initial={{ opacity: 0, y: 10, skewX: 5 }}
             animate={{ opacity: 1, y: 0, skewX: 0 }}
             exit={{ opacity: 0, y: -10, skewX: -5 }}
             transition={{ duration: 0.3, type: "spring", stiffness: 200, damping: 20 }}
-            className="text-4xl md:text-6xl font-extrabold text-panel tracking-tight origin-left drop-shadow-md"
+            className="text-3xl md:text-6xl font-extrabold text-panel tracking-tight origin-left drop-shadow-md"
           >
             {format(currentMonth, 'MMMM').toUpperCase()} <br className="hidden md:block" />
             <span className="font-light text-peach">{format(currentMonth, 'yyyy')}</span>

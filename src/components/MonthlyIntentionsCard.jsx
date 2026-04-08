@@ -3,12 +3,11 @@ import { format } from 'date-fns';
 
 const MonthlyIntentionsCard = ({ currentMonth, intentions, onChangeIntentions }) => {
   return (
-    <div className="rounded-xl p-4 md:p-6 flex flex-col items-start bg-panel border-2 border-ink shadow-sm h-full relative overflow-hidden">
-
-      <h3 className="text-base md:text-lg font-bold text-ink mb-1 tracking-wide z-10 uppercase">Monthly Intentions</h3>
-      <p className="text-xs md:text-sm font-semibold text-coral mb-3 z-10">Focus areas for {format(currentMonth, 'MMMM')}</p>
+    <div className="rounded-xl p-3 md:p-6 flex flex-col items-start bg-panel border-2 border-ink shadow-sm h-full relative overflow-hidden">
+      <h3 className="text-sm md:text-lg font-bold text-ink mb-1 tracking-wide z-10 uppercase">Monthly Intentions</h3>
+      <p className="text-[10px] md:text-sm font-semibold text-coral mb-2 md:mb-3 z-10">Focus areas for {format(currentMonth, 'MMMM')}</p>
       
-      <div className="w-full flex-1 relative z-10 mt-1">
+      <div className="w-full flex-1 relative z-10 mt-0 md:mt-1">
         {/* Repeating lines background for analog paper texture */}
         <div 
           className="absolute inset-0 pointer-events-none opacity-20"

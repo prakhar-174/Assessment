@@ -68,11 +68,11 @@ const CuratedSchedule = ({ currentMonth, selection, onSelectionChange, onAppendN
   const gridRowClass = days.length > 35 ? 'grid-rows-6' : 'grid-rows-5';
 
   return (
-    <div className="rounded-xl p-4 md:p-6 bg-panel border-2 border-ink shadow-sm relative flex flex-col h-full w-full overflow-hidden">
-      <h2 className="text-base md:text-xl font-extrabold text-ink mb-2 z-10 relative flex-shrink-0 tracking-tight">Curated Schedule</h2>
+    <div className="rounded-xl p-2 md:p-6 bg-panel border-2 border-ink shadow-sm relative flex flex-col h-auto md:h-full w-full overflow-hidden">
+      <h2 className="text-base md:text-xl font-extrabold text-ink mb-1 md:mb-2 z-10 relative flex-shrink-0 tracking-tight px-1 md:px-0">Curated Schedule</h2>
 
       {/* Grid container with restricted Max Width and centered layout */}
-      <div className="flex-1 w-full max-w-lg md:max-w-2xl mx-auto relative group z-10 flex flex-col justify-center items-center min-h-0 pt-2 pb-10 md:pb-12"> 
+      <div className="w-full h-auto md:flex-1 max-w-lg md:max-w-2xl mx-auto relative group z-10 flex flex-col justify-center items-center md:min-h-0 pt-1 md:pt-2 pb-8 md:pb-12"> 
         <div className="grid grid-cols-7 mb-2 flex-shrink-0 w-full gap-x-2 md:gap-x-4">
           {weekDays.map((day) => (
             <div key={day} className="text-center text-[10px] md:text-[12px] font-semibold text-ink/60 tracking-widest uppercase">
@@ -82,7 +82,7 @@ const CuratedSchedule = ({ currentMonth, selection, onSelectionChange, onAppendN
         </div>
         
         {/* Compressed dense grid with landscape gap layout (wider horizontal, tighter vertical) */}
-        <div className={`grid grid-cols-7 gap-x-2 gap-y-1 md:gap-x-4 md:gap-y-2 relative w-full flex-1 min-h-0 ${gridRowClass}`}>
+        <div className={`grid grid-cols-7 gap-x-2 gap-y-1 md:gap-x-4 md:gap-y-2 relative w-full h-auto md:flex-1 md:min-h-0 ${gridRowClass}`}>
           {days.map((day) => {
             const isOutside = !isSameMonth(day, monthStart);
             const { start, end } = selection;

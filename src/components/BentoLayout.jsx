@@ -64,16 +64,10 @@ const BentoLayout = () => {
   return (
     <div className="w-full h-full max-w-5xl mx-auto flex flex-col items-center">
       
-      {/* Top Application Header (Minimal) */}
-      <nav className="w-full flex items-center justify-between mb-4 md:mb-6 px-2 md:px-0 flex-shrink-0">
-        <div className="text-xl font-bold tracking-tight text-panel flex items-center gap-2">
-          Apex Calendar
-        </div>
-      </nav>
-
+      {/* Top Application Header strictly removed for purity */}
       {/* The Physical Wall Calendar Page Element */}
-      <div className="relative w-full shadow-[0_15px_40px_rgba(30,16,0,0.5)] rounded-b-xl 
-                      bg-panel border border-[#e6decc] flex-1 flex flex-col min-h-0
+      <div className="relative w-full shadow-[0_15px_40px_rgba(30,16,0,0.5)] rounded-xl md:rounded-b-xl md:rounded-t-none
+                      bg-panel border border-[#e6decc] flex-1 flex flex-col min-h-0 h-auto md:h-full
                       before:absolute before:inset-0 before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyIiBoZWlnaHQ9IjIiPgo8cmVjdCB3aWR0aD0iMiIgaGVpZ2h0PSIyIiBmaWxsPSIjMmIyYjJiIiBmaWxsLW9wYWNpdHk9IjAuMDIiLz4KPC9zdmc+')] 
                       before:pointer-events-none before:z-0">
         
@@ -81,8 +75,11 @@ const BentoLayout = () => {
         <SpiralBinding />
         
         {/* Physical Page Edge / Navigation Bar */}
-        <div className="pt-8 md:pt-10 pb-4 px-6 md:px-10 flex justify-between items-center border-b border-[#e6decc] relative z-10 flex-shrink-0">
-           <span className="text-ink/60 font-medium text-xs md:text-sm tracking-widest uppercase">{format(currentMonth, 'yyyy')} Edition</span>
+        <div className="pt-6 md:pt-10 pb-3 md:pb-4 px-4 md:px-10 flex justify-between items-center border-b border-[#e6decc] relative z-10 flex-shrink-0">
+           <div className="flex flex-col">
+             <span className="text-ink/60 font-medium text-[10px] md:text-sm tracking-widest uppercase">{format(currentMonth, 'yyyy')} Edition</span>
+             <span className="text-ink/30 font-bold text-[8px] md:text-[10px] tracking-widest uppercase mt-0.5 md:mt-1">Apex Calendar</span>
+           </div>
            
            <div className="flex space-x-2">
               <button
@@ -103,14 +100,14 @@ const BentoLayout = () => {
         </div>
 
         {/* Modern Bento Grid Structure nested inside the page */}
-        <div className="flex flex-col md:grid md:grid-cols-12 gap-4 md:gap-6 w-full p-4 md:p-8 relative z-10 flex-1 min-h-0">
+        <div className="flex flex-col md:grid md:grid-cols-12 gap-3 md:gap-6 w-full p-2 md:p-8 relative z-10 flex-1 min-h-0">
           
           {/* Top Row - Fixed/Flexible combo */}
-          <div className="md:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 flex-shrink-0">
-            <div className="md:col-span-8 h-48 md:h-56">
+          <div className="md:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-6 flex-shrink-0">
+            <div className="md:col-span-8 h-36 md:h-56">
               <HeroCard currentMonth={currentMonth} />
             </div>
-            <div className="md:col-span-4 h-48 md:h-56">
+            <div className="md:col-span-4 h-36 md:h-56">
               <MonthlyIntentionsCard 
                 currentMonth={currentMonth} 
                 intentions={intentions}
@@ -120,7 +117,7 @@ const BentoLayout = () => {
           </div>
 
           {/* Middle Row - takes remaining space */}
-          <div className="md:col-span-12 flex-1 min-h-[300px]">
+          <div className="md:col-span-12 w-full h-auto md:flex-1 md:min-h-[300px] mt-2 md:mt-0 mb-4 md:mb-0">
             <CuratedSchedule 
               currentMonth={currentMonth}
               selection={selection}
