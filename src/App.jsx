@@ -3,7 +3,7 @@ import BentoLayout from './components';
 
 function App() {
   return (
-    <div className="w-full min-h-screen py-8 md:py-16 px-4 md:px-8 bg-obsidian flex justify-center items-start">
+    <div className="w-full h-screen overflow-hidden bg-earth flex justify-center items-center p-2 md:p-4">
       <BentoLayout />
     </div>
   );

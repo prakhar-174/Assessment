@@ -35,7 +35,6 @@ const CuratedSchedule = ({ currentMonth, selection, onSelectionChange, onAppendN
     e.preventDefault();
     if (!modalInput.trim()) return;
 
-    // Determine the string representation of dates
     const { start, end } = selection;
     let dateStr = '';
     let involvedDates = [];
@@ -51,7 +50,7 @@ const CuratedSchedule = ({ currentMonth, selection, onSelectionChange, onAppendN
       dateStr = format(start, 'MMM d');
       involvedDates = [start];
     } else {
-      dateStr = format(new Date(), 'MMM d'); // default today
+      dateStr = format(new Date(), 'MMM d'); 
       involvedDates = [new Date()];
     }
 
@@ -66,20 +65,24 @@ const CuratedSchedule = ({ currentMonth, selection, onSelectionChange, onAppendN
   const days = eachDayOfInterval({ start: startDate, end: endDate });
   const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-  return (
-    <div className="rounded-2xl p-6 md:p-8 bg-[#1f2833] border border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.4)] relative flex flex-col h-full w-full overflow-hidden">
-      <h2 className="text-xl font-bold text-white mb-6 z-10 relative">Curated Schedule</h2>
+  const gridRowClass = days.length > 35 ? 'grid-rows-6' : 'grid-rows-5';
 
-      <div className="flex-1 w-full mx-auto relative group z-10">
-        <div className="grid grid-cols-7 mb-4 gap-2">
+  return (
+    <div className="rounded-xl p-4 md:p-6 bg-panel border-2 border-ink shadow-sm relative flex flex-col h-full w-full overflow-hidden">
+      <h2 className="text-base md:text-xl font-extrabold text-ink mb-2 z-10 relative flex-shrink-0 tracking-tight">Curated Schedule</h2>
+
+      {/* Grid container with restricted Max Width and centered layout */}
+      <div className="flex-1 w-full max-w-lg md:max-w-2xl mx-auto relative group z-10 flex flex-col justify-center items-center min-h-0 pt-2 pb-10 md:pb-12"> 
+        <div className="grid grid-cols-7 mb-2 flex-shrink-0 w-full gap-x-2 md:gap-x-4">
           {weekDays.map((day) => (
-            <div key={day} className="text-center text-[10px] md:text-xs font-semibold text-slate-500 tracking-widest">
+            <div key={day} className="text-center text-[10px] md:text-[12px] font-semibold text-ink/60 tracking-widest uppercase">
               {day}
             </div>
           ))}
         </div>
         
-        <div className="grid grid-cols-7 gap-y-3 gap-x-2 relative w-full h-[80%] place-content-start place-items-stretch">
+        {/* Compressed dense grid with landscape gap layout (wider horizontal, tighter vertical) */}
+        <div className={`grid grid-cols-7 gap-x-2 gap-y-1 md:gap-x-4 md:gap-y-2 relative w-full flex-1 min-h-0 ${gridRowClass}`}>
           {days.map((day) => {
             const isOutside = !isSameMonth(day, monthStart);
             const { start, end } = selection;
@@ -90,37 +93,37 @@ const CuratedSchedule = ({ currentMonth, selection, onSelectionChange, onAppendN
             const dayNum = parseInt(format(day, 'd'), 10);
             const hasEventDot = !isOutside && (dayNum === 15 || dayNum === 22);
 
-            // Determine if this exact day is in the "success glow" array
             const isGlowing = successGlowDates.some(gDate => isSameDay(gDate, day));
 
-            let dayClasses = "relative aspect-square w-full min-h-[48px] max-w-[60px] md:max-w-[70px] mx-auto rounded-xl flex items-center justify-center text-sm font-medium transition-all duration-300 cursor-pointer ";
+            // Dense typographical focus with perfectly snug, forced circular highlights
+            let dayClasses = "relative w-8 h-8 md:w-10 md:h-10 mx-auto rounded-full flex items-center justify-center text-sm md:text-lg transition-colors duration-150 cursor-pointer border-2 z-10 ";
             
             if (isOutside) {
-              dayClasses += "text-slate-700 opacity-50 cursor-default ";
+              dayClasses += "border-transparent text-ink/20 font-medium cursor-default ";
             } else if (isGlowing) {
-              dayClasses += "bg-emerald-500 text-white font-bold shadow-[0_0_20px_rgba(16,185,129,0.8)] scale-110 z-20 ";
+              dayClasses += "bg-[#4ade80] border-[#4ade80] text-[#064e3b] font-extrabold z-20 ";
             } else if (isStart || isEnd) {
-              dayClasses += "bg-coral text-white font-bold shadow-[0_0_15px_rgba(255,107,107,0.6)] scale-105 z-10 ";
+              dayClasses += "bg-coral border-coral text-ink font-extrabold z-20 ";
             } else if (isBetween) {
-              dayClasses += "bg-coral/10 text-coral border border-coral/20 ";
+              dayClasses += "bg-peach border-peach text-ink font-extrabold z-10 ";
             } else {
-              dayClasses += "text-slate-300 hover:bg-white/5 hover:text-white ";
-              if (today) dayClasses += "border border-coral/50 animate-pulse-slow ";
+              dayClasses += "border-transparent text-ink font-extrabold hover:bg-ink/5 ";
+              if (today) dayClasses += "border-ink "; /* Kept thick border for today */
             }
 
             return (
               <div 
                 key={day.toISOString()} 
-                className="flex items-center justify-center relative"
+                className="flex items-center justify-center relative min-h-0 w-full"
                 onClick={() => handleDateClick(day)}
               >
-                {/* Bridge highlight for 'in-between' */}
+                {/* Bridge highlight for 'in-between' - spans columns completely behind the circles */}
                 {((isBetween || isStart || isEnd) && start && end && !isOutside) && (
                   <div 
-                    className={`absolute h-[60%] top-1/2 -translate-y-1/2 ${isGlowing ? 'bg-emerald-500/20' : 'bg-coral/10'} z-0 transition-colors duration-300
-                      ${isStart && !isSameDay(start, end) ? 'w-1/2 right-0' : ''}
-                      ${isEnd && !isSameDay(start, end) ? 'w-1/2 left-0' : ''}
-                      ${isBetween ? 'w-full' : ''}
+                    className={`absolute h-6 md:h-8 top-1/2 -translate-y-1/2 ${isGlowing ? 'bg-[#4ade80]' : 'bg-peach'} z-0 transition-colors duration-150
+                      ${isStart && !isSameDay(start, end) ? 'w-[calc(50%+4px)] md:w-[calc(50%+8px)] right-[-4px] md:right-[-8px]' : ''}
+                      ${isEnd && !isSameDay(start, end) ? 'w-[calc(50%+4px)] md:w-[calc(50%+8px)] left-[-4px] md:left-[-8px]' : ''}
+                      ${isBetween ? 'w-[calc(100%+8px)] md:w-[calc(100%+16px)] left-[-4px] md:left-[-8px]' : ''}
                       ${isSameDay(start, end) ? 'hidden' : ''}
                     `}
                   />
@@ -128,30 +131,30 @@ const CuratedSchedule = ({ currentMonth, selection, onSelectionChange, onAppendN
                 
                 <div className={dayClasses}>
                   {format(day, 'd')}
-                  
-                  {/* Event Dots */}
-                  {hasEventDot && (
-                    <div className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-slate-400 group-hover:bg-coral transition-colors" />
-                  )}
                 </div>
+
+                {/* Event Dots nudged safely down below the circle */}
+                {hasEventDot && (
+                  <div className="absolute -bottom-2 md:-bottom-3 left-1/2 transform -translate-x-1/2 w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-ink/40 group-hover:bg-ink transition-colors z-0" />
+                )}
               </div>
             );
           })}
         </div>
-
-        {/* Floating Action Button */}
-        <motion.button 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.9, rotate: 90 }}
-          onClick={handleFabClick}
-          className="absolute -bottom-2 md:-bottom-4 -right-2 md:-right-4 w-14 h-14 bg-coral text-white rounded-full flex items-center justify-center shadow-[0_5px_20px_rgba(255,107,107,0.5)] z-20 outline-none" 
-          aria-label="New Curated Entry"
-        >
-          <Plus size={24} />
-        </motion.button>
       </div>
+      
+      {/* Floating Action Button */}
+      <motion.button 
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.9, rotate: 90 }}
+        onClick={handleFabClick}
+        className="absolute bottom-4 right-4 md:bottom-6 md:right-6 w-12 h-12 md:w-14 md:h-14 bg-coral text-ink border-2 border-ink rounded-full flex items-center justify-center shadow-sm z-30 outline-none" 
+        aria-label="New Curated Entry"
+      >
+        <Plus size={24} strokeWidth={3} />
+      </motion.button>
 
-      {/* Inline Modal (Glassmorphism layer via AnimatePresence) */}
+      {/* Inline Modal */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div 
@@ -159,21 +162,20 @@ const CuratedSchedule = ({ currentMonth, selection, onSelectionChange, onAppendN
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute inset-0 z-30 bg-obsidian/60 backdrop-blur-md rounded-2xl flex items-center justify-center p-6"
+            className="absolute inset-0 z-40 bg-earth/95 backdrop-blur-md flex items-center justify-center p-4 md:p-6"
           >
-            <div className="bg-[#1f2833] border border-white/10 shadow-2xl rounded-xl p-6 w-full max-w-sm relative">
+            <div className="bg-panel border-2 border-ink shadow-md rounded-xl p-5 w-full max-w-sm relative">
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white"
+                className="absolute top-4 right-4 text-ink/50 hover:text-ink cursor-pointer"
               >
                 <X size={20} />
               </button>
               
-              <h3 className="text-lg font-bold text-white mb-2 tracking-wide">Smart Entry</h3>
+              <h3 className="text-lg font-bold text-ink mb-1 tracking-wide uppercase text-center">Smart Entry</h3>
               
-              {/* Context indicator for Dates being logged */}
-              <p className="text-sm text-coral mb-4 font-medium">
-                Logging: {
+              <p className="text-xs text-coral font-bold mb-4 text-center">
+                LOGGING // {
                   selection.start && selection.end 
                     ? `${format(selection.start, 'MMM d')} - ${format(selection.end, 'MMM d')}` 
                     : selection.start 
@@ -189,11 +191,11 @@ const CuratedSchedule = ({ currentMonth, selection, onSelectionChange, onAppendN
                   value={modalInput}
                   onChange={(e) => setModalInput(e.target.value)}
                   placeholder="Schedule entry or memo..."
-                  className="w-full bg-[#0b0c10] border border-white/10 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:border-coral transition-colors mb-4"
+                  className="w-full bg-[#f4ebd8] border-2 border-ink rounded-lg p-3 text-ink placeholder-ink/40 focus:outline-none focus:bg-white transition-colors mb-4 font-bold"
                 />
                 <button 
                   type="submit"
-                  className="w-full bg-coral hover:bg-[#ff5252] text-white font-bold py-3 rounded-lg shadow-lg transition-colors flex items-center justify-center"
+                  className="w-full bg-coral border-2 border-ink hover:bg-[#ffad6e] text-ink font-bold tracking-widest uppercase py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center"
                 >
                   Save Entry
                 </button>
